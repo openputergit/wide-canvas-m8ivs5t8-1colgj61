@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarResale - Premium Used Cars</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        .car-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600">CarResale</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Home</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600">Cars</a>
+                    <a href="#" id="sellCarBtn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Sell Your Car</a>
+                    <a href="#" id="loginBtn" class="text-gray-700 hover:text-blue-600">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-blue-500 to-blue-700 py-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">Find Your Perfect Used Car</h1>
+            <p class="text-xl text-white mb-8">Verified Sellers | Assured Quality | Best Prices</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <input type="text" placeholder="Search by brand, model..." class="px-6 py-3 rounded-lg w-full md:w-96">
+                <button class="bg-white text-blue-600 px-8 py-3 rounded-lg hover:bg-gray-100">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Cars -->
+    <div class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="text-3xl font-bold mb-8">Featured Cars</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Car Cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <h2 class="text-2xl font-bold mb-6">Login</h2>
+            <div class="space-y-4">
+                <input type="email" placeholder="Email" class="w-full px-4 py-2 border rounded">
+                <input type="password" placeholder="Password" class="w-full px-4 py-2 border rounded">
+                <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Login</button>
+                <p class="text-center">Not registered? <a href="#" class="text-blue-600">Create account</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sell Car Modal -->
+    <div id="sellCarModal" class="modal">
+        <div class="bg-white p-8 rounded-lg w-full max-w-2xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <h2 class="text-2xl font-bold mb-6">List Your Car</h2>
+            <form id="sellCarForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="Brand" class="px-4 py-2 border rounded" required>
+                    <input type="text" placeholder="Model" class="px-4 py-2 border rounded" required>
+                    <input type="number" placeholder="Year" class="px-4 py-2 border rounded" required>
+                    <input type="number" placeholder="Price" class="px-4 py-2 border rounded" required>
+                    <input type="number" placeholder="Kilometers driven" class="px-4 py-2 border rounded" required>
+                    <input type="text" placeholder="Location" class="px-4 py-2 border rounded" required>
+                </div>
+                <div class="space-y-2">
+                    <label class="block">Documents</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border p-4 rounded">
+                            <p>PUC Certificate</p>
+                            <input type="file" accept=".pdf,.jpg,.png" required>
+                        </div>
+                        <div class="border p-4 rounded">
+                            <p>Insurance</p>
+                            <input type="file" accept=".pdf,.jpg,.png" required>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block mb-2">Car Photos</label>
+                    <input type="file" accept="image/*" multiple required>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">List Car</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample car data
+        const cars = [
+            {
+                brand: 'Toyota',
+                model: 'Camry',
+                year: 2019,
+                price: 1800000,
+                image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&w=500'
+            },
+            {
+                brand: 'Honda',
+                model: 'City',
+                year: 2020,
+                price: 1500000,
+                image: 'https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=500'
+            },
+            {
+                brand: 'Hyundai',
+                model: 'Creta',
+                year: 2021,
+                price: 2000000,
+                image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=500'
+            }
+        ];
+
+        // Render cars
+        function renderCars() {
+            const carContainer = document.querySelector('.grid');
+            carContainer.innerHTML = cars.map(car => `
+                <div class="car-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src="${car.image}" alt="${car.brand} ${car.model}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${car.brand} ${car.model}</h3>
+                        <p class="text-gray-600 mb-4">Year: ${car.year}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-600 font-bold">₹${car.price.toLocaleString()}</span>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Modal handling
+        const loginBtn = document.getElementById('loginBtn');
+        const sellCarBtn = document.getElementById('sellCarBtn');
+        const loginModal = document.getElementById('loginModal');
+        const sellCarModal = document.getElementById('sellCarModal');
+
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'block';
+        });
+
+        sellCarBtn.addEventListener('click', () => {
+            sellCarModal.style.display = 'block';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) loginModal.style.display = 'none';
+            if (e.target === sellCarModal) sellCarModal.style.display = 'none';
+        });
+
+        // Form handling
+        document.getElementById('sellCarForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Car listed successfully!');
+            sellCarModal.style.display = 'none';
+        });
+
+        // Initialize
+        renderCars();
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
